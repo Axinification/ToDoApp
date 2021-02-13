@@ -1,10 +1,11 @@
-﻿@model IEnumerable<ToDoList.Models.Todo>
+﻿
+@model IEnumerable<ToDoList.Models.Todo>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h2>@ViewData["Title"]</h2>
 <h2 class="check-counter"></h2>
 
 <p>
@@ -36,7 +37,7 @@
                     @Html.DisplayFor(modelItem => item.CreatedDate)
                 </td>
                 <td class="checkbox-column">
-                    @Html.CheckBoxFor(modelItem => item.Done, new { onclick = "SaveCheck( this," + item.ID + ")"})
+                    @Html.CheckBoxFor(modelItem => item.Done, new { onclick = "SaveCheck( this," + item.ID + ")" })
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
@@ -48,26 +49,34 @@
     </tbody>
 </table>
 
-<script>
-    var countChecked = function () {
-        var n = $("input:checked").length;
-        var m = $(".task-row").length;
-        $(".check-counter").text(n + " out of " + m + " tasks " + (n === 1 ? " is" : " are") + " checked!");
-    };
-    countChecked();
+@section Scripts {
+    <script>
+        var countChecked = function () {
+            var n = $("input:checked").length;
+            var m = $(".task-row").length;
+            $(".check-counter").text(n + " out of " + m + " tasks " + (n === 1 ? " is" : " are") + " checked!");
+        };
+        countChecked();
 
-    $("input[type=checkbox]").on("click", countChecked);
+        $("input[type=checkbox]").on("click", countChecked);
 
-    function SaveCheck(box, id) {
-        var isChecked = $(box).is(':checked');
-        $.post("@Url.Action("SaveChecked", "TodosController")", { check: isChecked, id: id });
-       @* $.ajax({
-            type: 'POST',
-            datatype: "json",
-            url: "@Url.Action("SaveChecked", "TodosController")",
-            data: { 'check': isChecked, 'id': id },
-            success: function (data) {
-            }
-        });*@
-    }
-</script>
+        function SaveCheck(box, id) {
+            var isChecked = $(box).is(':checked');
+
+            $.ajax({
+                type: 'POST',
+                datatype: "application/json; charset=utf-8",
+                url: "/Todos/SaveChecked",
+                data: { 'check': isChecked, 'id': id },
+                success: function (data) {
+                    alert(data.d);
+                },
+                error: function (data) {
+                    console.log(JSON.stringify(error));
+                }
+            });
+        }
+    </script>
+}
+
+

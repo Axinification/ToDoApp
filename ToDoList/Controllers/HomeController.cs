@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Session;
 
 namespace ToDoList.Controllers
 {
@@ -20,11 +22,15 @@ namespace ToDoList.Controllers
 
         public IActionResult Index()
         {
+            HttpContext.Session.SetString("Test", "Content of a session object called 'Test'");
+            
             return View();
         }
 
         public IActionResult Privacy()
         {
+            ViewBag.sessionv = HttpContext.Session.GetString("Test");
+            ViewData["Message"] = "Your private page";
             return View();
         }
 

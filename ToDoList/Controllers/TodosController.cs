@@ -56,6 +56,7 @@ namespace ToDoList.Controllers
         // Checkbox save method
         [HttpPost]
         [ValidateAntiForgeryToken]
+        // POST: Todos/SaveChecked
         public async Task<IActionResult> SaveChecked(bool check, int? id)
         {
             var todo = await _context.Todo.FindAsync(id);
@@ -91,7 +92,7 @@ namespace ToDoList.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Description,CreatedDate,Done")] Todo todo)
+        public async Task<IActionResult> Create([Bind("ID,Description,CreatedDate")] Todo todo)
         {
             if (ModelState.IsValid)
             {
@@ -123,7 +124,7 @@ namespace ToDoList.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Description,CreatedDate")] Todo todo)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Description,CreatedDate,Done")] Todo todo)
         {
             if (id != todo.ID)
             {
@@ -148,7 +149,7 @@ namespace ToDoList.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return View(todo);
             }
             return View(todo);
         }
@@ -172,6 +173,7 @@ namespace ToDoList.Controllers
         }
 
         // POST: Todos/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

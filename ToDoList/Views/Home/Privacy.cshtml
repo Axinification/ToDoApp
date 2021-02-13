@@ -3,4 +3,12 @@
 }
 <h1>@ViewData["Title"]</h1>
 
+
 <p>Use this page to detail your site's privacy policy.</p>
+<p>Session info -  @ViewBag.sessionv<b></b></p>
+<script>
+    $("b").text(function (!@ViewBag.sessionv))
+    {
+        return "Session ended";
+    }
+</script>
