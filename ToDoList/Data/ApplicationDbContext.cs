@@ -12,5 +12,7 @@ namespace ToDoList.Data
             : base(options)
         {
         }
+
+        public DbSet<ToDoList.Models.Todo> Todo { get; set; }
     }
 }

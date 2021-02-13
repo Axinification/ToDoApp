@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ToDoList.Models.Todo>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<h2 class="check-counter"></h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th class="checkbox-column">
+                @Html.DisplayNameFor(model => model.Done)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="task-row">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td class="checkbox-column">
+                    @Html.CheckBoxFor(modelItem => item.Done, new { onclick = "SaveCheck( this," + item.ID + ")"})
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    var countChecked = function () {
+        var n = $("input:checked").length;
+        var m = $(".task-row").length;
+        $(".check-counter").text(n + " out of " + m + " tasks " + (n === 1 ? " is" : " are") + " checked!");
+    };
+    countChecked();
+
+    $("input[type=checkbox]").on("click", countChecked);
+
+    function SaveCheck(box, id) {
+        var isChecked = $(box).is(':checked');
+        $.post("@Url.Action("SaveChecked", "TodosController")", { check: isChecked, id: id });
+       @* $.ajax({
+            type: 'POST',
+            datatype: "json",
+            url: "@Url.Action("SaveChecked", "TodosController")",
+            data: { 'check': isChecked, 'id': id },
+            success: function (data) {
+            }
+        });*@
+    }
+</script>

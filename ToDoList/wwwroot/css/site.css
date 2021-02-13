@@ -7,6 +7,12 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+.checkbox-column {
+    text-align: center;
+    vertical-align: middle;
+    margin: auto;
+}
+
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;
